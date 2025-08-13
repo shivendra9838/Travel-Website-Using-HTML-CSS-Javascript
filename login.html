@@ -273,81 +273,26 @@
     
 </body>
 <script>
-// Add user login tracking for admin panel
-function trackUserLogin() {
-    // Get current user data from form
-    const loginForm = document.getElementById('loginform');
+// Function to track user logins for admin panel
+function addUserToAdminTracking(username, email) {
+    const timestamp = new Date().toISOString();
+    const userDetails = {
+        username: username,
+        email: email,
+        loginTime: timestamp
+    };
     
-    if (loginForm) {
-        loginForm.addEventListener('submit', function(e) {
-            // Don't prevent default here, let the original login work
-            const email = document.getElementById('email1').value;
-            const username = email.split('@')[0]; // Use email prefix as username
-            
-            // Track the login for admin panel
-            if (email && username) {
-                // Use the function from admin-auth.js if available
-                if (typeof trackUserLogin !== 'undefined') {
-                    trackUserLogin(username, email);
-                } else {
-                    // Manual tracking if admin script not loaded
-                    const timestamp = new Date().toISOString();
-                    const userDetails = {
-                        username: username,
-                        email: email,
-                        loginTime: timestamp
-                    };
-                    
-                    // Get existing users
-                    const existingUsers = JSON.parse(localStorage.getItem('loggedInUsers') || '[]');
-                    existingUsers.push(userDetails);
-                    localStorage.setItem('loggedInUsers', JSON.stringify(existingUsers));
-                    
-                    // Update visit count
-                    const currentVisitCount = parseInt(localStorage.getItem('visitCount') || '0');
-                    localStorage.setItem('visitCount', (currentVisitCount + 1).toString());
-                }
-            }
-        });
-    }
+    // Get existing users
+    const existingUsers = JSON.parse(localStorage.getItem('loggedInUsers') || '[]');
+    existingUsers.push(userDetails);
+    localStorage.setItem('loggedInUsers', JSON.stringify(existingUsers));
     
-    // Also track signup form
-    const signupForm = document.getElementById('signupform');
+    // Update visit count
+    const currentVisitCount = parseInt(localStorage.getItem('visitCount') || '0');
+    localStorage.setItem('visitCount', (currentVisitCount + 1).toString());
     
-    if (signupForm) {
-        signupForm.addEventListener('submit', function(e) {
-            const email = document.getElementById('email').value;
-            const name = document.getElementById('name').value;
-            
-            if (email && name) {
-                // Use the function from admin-auth.js if available
-                if (typeof trackUserLogin !== 'undefined') {
-                    trackUserLogin(name, email);
-                } else {
-                    // Manual tracking if admin script not loaded
-                    const timestamp = new Date().toISOString();
-                    const userDetails = {
-                        username: name,
-                        email: email,
-                        loginTime: timestamp
-                    };
-                    
-                    // Get existing users
-                    const existingUsers = JSON.parse(localStorage.getItem('loggedInUsers') || '[]');
-                    existingUsers.push(userDetails);
-                    localStorage.setItem('loggedInUsers', JSON.stringify(existingUsers));
-                    
-                    // Update visit count
-                    const currentVisitCount = parseInt(localStorage.getItem('visitCount') || '0');
-                    localStorage.setItem('visitCount', (currentVisitCount + 1).toString());
-                }
-            }
-        });
-    }
+    console.log('User tracked for admin panel:', userDetails);
 }
-
-// Initialize tracking when page loads
-document.addEventListener('DOMContentLoaded', trackUserLogin);
 </script>
 </html>
 <script src="main.js"></script>
@@ -427,6 +372,8 @@ document.addEventListener('DOMContentLoaded', trackUserLogin);
 
             let data = await res.json();
             displayMessage('Account Created','success');
+            // Track user signup for admin panel
+            addUserToAdminTracking(name.value, email.value);
             fetchData();
         } catch (err) {
             console.log(err);
@@ -457,6 +404,8 @@ form2.addEventListener("submit", function(event) {
     
       } else {
         displayMessage('User Login Successfull','success'); 
+        // Track user login for admin panel
+        addUserToAdminTracking(login_data[i].name, login_data[i].email);
         // Redirect to the regular user page (change "admin.html" to the appropriate user page).
         localStorage.setItem('userId', login_data[i].id);
         console.log('User logged In'); 
