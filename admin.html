@@ -266,10 +266,11 @@
                 </label>
             </div> -->
       <div id="login-container">
-        <a href="./login.html" id="loginBtn"><i class="fa-solid fa-user" id="login-btn"></i></a>
-        <div style="display: none">
-          <a href="/" id="logout-btn" class="btn-small" style="border-radius: 50px; color: var(--white); padding: 10px 30px;">Log Out</a>
-
+        <div style="display: flex; align-items: center; gap: 1rem;">
+          <span style="color: var(--white-light); font-size: var(--nav-link);">Welcome, Admin</span>
+          <button id="admin-logout-btn" class="btn-small" style="border-radius: 50px; color: var(--white); padding: 10px 20px; background-color: var(--failure); border: none;">
+            <i class="fas fa-sign-out-alt"></i> Logout
+          </button>
         </div>
       </div>
     </nav>
@@ -330,22 +331,22 @@
       <div class="main-content">
         <div id="default">
           <h1>
-            Welcome Back! <span style="color: var(--highlight)">Shivendra</span>
+            Welcome Back! <span style="color: var(--highlight)">Admin</span>
           </h1>
-          <p>While you were gone, we had a lot of traffic on our website</p>
+          <p>Real-time statistics from your travel website</p>
           <p>
-            Number Of Visits:<span style="color: var(--highlight)">42</span>
+            Number Of Visits: <span style="color: var(--highlight)" id="visitCount">0</span>
           </p>
           <p>
-            Total Number Of Users :<span style="color: var(--highlight)">11</span>
+            Total Number Of Logged Users: <span style="color: var(--highlight)" id="userCount">0</span>
           </p>
           <p>
             Total Number Of Destinations:
-            <span style="color: var(--highlight)">115</span>
+            <span style="color: var(--highlight)" id="destinationCount">115</span>
           </p>
           <p>
-            Total Number Of People to admire:
-            <span style="color: var(--highlight)">21</span>
+            Active Admin Sessions:
+            <span style="color: var(--highlight)">1</span>
           </p>
         </div>
         <div id="blank">
@@ -377,6 +378,7 @@
   </footer>
 </body>
 <script src="main.js"></script>
+<script src="js/admin-auth.js"></script>
 <script>
   let obj = {
     1: "./assets/Avatar1.png",
@@ -444,7 +446,7 @@
     });
     usersTab.classList.remove("inactive");
     usersTab.classList.add("btn");
-    datauserfetch(usersUrl);
+    showLoggedInUsers();
   });
 
   // let addDestinationBtn = document.querySelector("#add-destination");
@@ -778,6 +780,61 @@
     food2.value = "";
     food3.value = "";
     image.value = "";
+  }
+
+  // Function to display logged-in users (tracked by admin system)
+  function showLoggedInUsers() {
+    defaultText.innerHTML = "";
+    loader.style.display = "block";
+    
+    setTimeout(() => {
+      main_container.innerHTML = null;
+      loader.style.display = "none";
+      
+      const loggedUsers = JSON.parse(localStorage.getItem('loggedInUsers')) || [];
+      
+      if (loggedUsers.length === 0) {
+        main_container.innerHTML = `
+          <div style="grid-column: span 3; text-align: center; padding: 3rem;">
+            <h2 style="color: var(--white-light); margin-bottom: 1rem;">No users have logged in yet</h2>
+            <p style="color: var(--white-light);">Users will appear here when they log into the website</p>
+            <i class="fas fa-users" style="font-size: 4rem; color: var(--background-light); opacity: 0.5; margin-top: 2rem;"></i>
+          </div>
+        `;
+        return;
+      }
+      
+      let table = document.createElement("table");
+      table.style.gridColumn = "span 3";
+
+      let thead = document.createElement("thead");
+      let trhead = document.createElement("tr");
+      let avatarHead = document.createElement("th");
+      let nameHead = document.createElement("th");
+      let emailHead = document.createElement("th");
+      let loginTimeHead = document.createElement("th");
+      let userIdHead = document.createElement("th");
+      let deleteHead = document.createElement("th");
+
+      avatarHead.textContent = "Avatar";
+      nameHead.textContent = "Username";
+      emailHead.textContent = "Email";
+      loginTimeHead.textContent = "Login Time";
+      userIdHead.textContent = "User ID";
+      deleteHead.textContent = "Actions";
+
+      trhead.append(avatarHead, nameHead, emailHead, loginTimeHead, userIdHead, deleteHead);
+      thead.append(trhead);
+
+      let tbody = document.createElement("tbody");
+      tbody.id = "user-table-body";
+
+      table.append(thead, tbody);
+      main_container.append(table);
+      
+      // Use the displayLoggedInUsers function from admin-auth.js
+      displayLoggedInUsers();
+    }, 500); // Small delay to show loading
   }
 </script>
 

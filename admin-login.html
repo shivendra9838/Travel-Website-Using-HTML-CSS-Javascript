@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="/assets/brand-icon.svg">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" 
+          integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" 
+          crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    <link rel="stylesheet" href="./main.css">
+    
+    <title>Admin Login | Every Travel</title>
+    
+    <style>
+        body {
+            background: var(--background);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .admin-login-container {
+            min-height: 60vh;
+            width: min(500px, 95%);
+            background-color: var(--background-dark);
+            overflow: hidden;
+            border-radius: 2rem;
+            border: 2px solid var(--background-light);
+            padding: 3rem 2rem;
+            position: relative;
+            transition: transform 0.3s ease-in-out;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+        
+        .admin-login-container:hover {
+            transform: scale(1.02);
+        }
+        
+        .admin-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .admin-header h1 {
+            color: var(--white);
+            margin-bottom: 0.5rem;
+        }
+        
+        .admin-header span {
+            color: var(--highlight);
+        }
+        
+        .admin-header p {
+            color: var(--white-light);
+            font-size: var(--nav-link);
+        }
+        
+        .admin-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .form-group label {
+            color: var(--white-light);
+            margin-bottom: 0.5rem;
+            font-size: var(--nav-link);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        .form-group input {
+            padding: 1rem;
+            border: none;
+            border-radius: 50px;
+            background-color: var(--white);
+            color: var(--background-dark);
+            font-size: var(--nav-link);
+            transition: all 0.3s ease;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border: 2px solid var(--primary);
+            box-shadow: 0 0 10px rgba(0, 150, 255, 0.3);
+        }
+        
+        .admin-login-btn {
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, var(--primary), var(--highlight));
+            border: none;
+            border-radius: 50px;
+            color: var(--white);
+            font-size: var(--nav-link);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+        
+        .admin-login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 150, 255, 0.4);
+        }
+        
+        .error-message {
+            color: var(--failure);
+            background-color: rgba(255, 0, 0, 0.1);
+            padding: 1rem;
+            border-radius: 10px;
+            border: 1px solid var(--failure);
+            text-align: center;
+            margin-top: 1rem;
+            display: none;
+        }
+        
+        .admin-watermark {
+            position: absolute;
+            bottom: -5%;
+            right: 2%;
+            font-size: 6rem;
+            color: var(--background-light);
+            opacity: 0.2;
+            animation: watermarkFloat 3s ease-in-out infinite alternate;
+        }
+        
+        @keyframes watermarkFloat {
+            0% {
+                opacity: 0.2;
+                transform: translateY(0);
+            }
+            100% {
+                opacity: 0.4;
+                transform: translateY(-10px);
+            }
+        }
+        
+        .back-to-home {
+            position: absolute;
+            top: 2rem;
+            left: 2rem;
+            color: var(--white-light);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: color 0.3s ease;
+        }
+        
+        .back-to-home:hover {
+            color: var(--primary);
+        }
+        
+        .demo-credentials {
+            background-color: rgba(0, 150, 255, 0.1);
+            border: 1px solid var(--primary);
+            border-radius: 10px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        
+        .demo-credentials h4 {
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .demo-credentials p {
+            color: var(--white-light);
+            font-size: var(--paragraph-small);
+            margin: 0.2rem 0;
+        }
+    </style>
+</head>
+<body>
+    <a href="index.html" class="back-to-home">
+        <i class="fas fa-arrow-left"></i>
+        Back to Home
+    </a>
+    
+    <div class="admin-login-container">
+        <div class="admin-header">
+            <h1>Admin <span>Portal</span></h1>
+            <p>Secure login for administrators</p>
+        </div>
+        
+        <div class="demo-credentials">
+            <h4><i class="fas fa-key"></i> Demo Credentials</h4>
+            <p><strong>Username:</strong> admin</p>
+            <p><strong>Password:</strong> admin123</p>
+        </div>
+        
+        <form class="admin-form" id="admin-login-form">
+            <div class="form-group">
+                <label for="admin-username">
+                    <i class="fas fa-user"></i> Username
+                </label>
+                <input type="text" id="admin-username" name="username" required placeholder="Enter admin username">
+            </div>
+            
+            <div class="form-group">
+                <label for="admin-password">
+                    <i class="fas fa-lock"></i> Password
+                </label>
+                <input type="password" id="admin-password" name="password" required placeholder="Enter admin password">
+            </div>
+            
+            <button type="submit" class="admin-login-btn">
+                <i class="fas fa-sign-in-alt"></i> Login to Admin Panel
+            </button>
+        </form>
+        
+        <div class="error-message" id="error-message">
+            Invalid credentials. Please try again.
+        </div>
+        
+        <div class="admin-watermark">
+            <i class="fas fa-shield-alt"></i>
+        </div>
+    </div>
+    
+    <script>
+        document.getElementById('admin-login-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('admin-username').value;
+            const password = document.getElementById('admin-password').value;
+            const errorMessage = document.getElementById('error-message');
+            
+            // Simple authentication (in production, this would be server-side)
+            if (username === 'admin' && password === 'admin123') {
+                localStorage.setItem('adminLoggedIn', 'true');
+                window.location.href = 'admin.html';
+            } else {
+                errorMessage.style.display = 'block';
+                
+                // Hide error message after 3 seconds
+                setTimeout(() => {
+                    errorMessage.style.display = 'none';
+                }, 3000);
+            }
+        });
+        
+        // Check if admin is already logged in
+        if (localStorage.getItem('adminLoggedIn') === 'true') {
+            window.location.href = 'admin.html';
+        }
+    </script>
+</body>
+</html>
